@@ -1,6 +1,14 @@
 {
   "dependencies": [
     {
+      "name": "aom",
+      "host": true
+    },
+    {
+      "name": "aom",
+      "host": false
+    },
+    {
       "name": "libjpeg-turbo",
       "host": true
     },
