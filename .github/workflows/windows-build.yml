@@ -29,6 +29,7 @@ jobs:
           version: ${{ env.LLVM_VERSION }}
 
       - name: Install Flutter
+        id: flutter
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"
@@ -41,7 +42,20 @@ jobs:
           flutter precache --windows
           Invoke-WebRequest -Uri https://github.com/rustdesk/engine/releases/download/main/windows-x64-release.zip -OutFile windows-x64-release.zip
           Expand-Archive -Path windows-x64-release.zip -DestinationPath windows-x64-release
-          mv -Force windows-x64-release/* C:/hostedtoolcache/windows/flutter/stable-${{ env.FLUTTER_VERSION }}-x64/bin/cache/artifacts/engine/windows-x64-release/
+          $flutterRoot = "${{ steps.flutter.outputs.CACHE-PATH }}"
+          if ([string]::IsNullOrEmpty($flutterRoot)) {
+            $flutterRoot = Split-Path -Parent (Split-Path -Parent (Get-Command flutter).Source)
+          }
+          Write-Host "Flutter root: $flutterRoot"
+          $engineDir = Join-Path $flutterRoot "bin/cache/artifacts/engine/windows-x64-release"
+          if (-not (Test-Path $engineDir)) {
+            Write-Host "Engine dir not found, searching for windows-x64-release under flutter root..."
+            $found = Get-ChildItem -Path $flutterRoot -Directory -Recurse -Filter "windows-x64-release" -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($found) { $engineDir = $found.FullName }
+          }
+          Write-Host "Engine dir: $engineDir"
+          New-Item -ItemType Directory -Force -Path $engineDir | Out-Null
+          Copy-Item -Force windows-x64-release/* $engineDir
 
       - name: Patch flutter
         shell: bash
