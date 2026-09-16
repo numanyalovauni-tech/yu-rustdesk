@@ -115,8 +115,8 @@ jobs:
           mv ./flutter/build/windows/x64/runner/Release ./YU-Destek
           sed -i '/dpiAware/d' res/manifest.xml
           pushd ./libs/portable
-          pip3 install -r requirements.txt
-          python3 ./generate.py -f ../../YU-Destek/ -o . -e ../../YU-Destek/rustdesk.exe
+          python -m pip install -r requirements.txt
+          python ./generate.py -f ../../YU-Destek/ -o . -e ../../YU-Destek/rustdesk.exe
           popd
           version=$(grep -m1 '^version' Cargo.toml | cut -d '"' -f2)
           mkdir -p output
