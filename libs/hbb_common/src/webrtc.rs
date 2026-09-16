@@ -632,7 +632,7 @@ impl WebRTCStream {
         // desktop controller keeps the crate default so it stays an unchanged comparison
         // point while the persistence experiment runs on the controlled side.
         if !remote_endpoint.is_empty() {
-            s.set_ice_max_binding_requests(Some(Self::ICE_MAX_BINDING_REQUESTS));
+            // s.set_ice_max_binding_requests(Some(Self::ICE_MAX_BINDING_REQUESTS));
         }
         // fe80::/10 can only be bound together with a scope id, which `IpAddr` cannot carry, so
         // gathering one never yields a candidate - only a failed bind and a warning per address.

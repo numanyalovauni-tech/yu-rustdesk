@@ -233,7 +233,6 @@ libxdo-sys = { path = "libs/libxdo-sys-stub" }
 # Pinned by rev, not branch: a fork branch can be rewritten out from under the lockfile.
 webrtc-util = { git = "https://github.com/rustdesk-org/webrtc", rev = "db3b07a9dd8f195916c89c2e62a8911402b11d27" }
 webrtc-sctp = { git = "https://github.com/rustdesk-org/webrtc", rev = "db3b07a9dd8f195916c89c2e62a8911402b11d27" }
-webrtc = { git = "https://github.com/rustdesk-org/webrtc", rev = "db3b07a9dd8f195916c89c2e62a8911402b11d27" }
 
 [package.metadata.winres]
 LegalCopyright = "Copyright © 2026 Yalova Üniversitesi. All rights reserved."
