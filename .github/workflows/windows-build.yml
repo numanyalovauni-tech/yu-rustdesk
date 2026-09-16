@@ -108,9 +108,20 @@ jobs:
       - name: Build YU-Destek Windows
         run: |
           python ./build.py --portable --flutter --skip-portable-pack
-          New-Item -ItemType Directory -Force -Path output | Out-Null
-          Copy-Item rustdesk-*-install.exe ./output/YU-Destek-install.exe -ErrorAction SilentlyContinue
-          Copy-Item rustdesk_portable.exe ./output/YU-Destek-portable.exe -ErrorAction SilentlyContinue
+
+      - name: Package YU-Destek
+        shell: bash
+        run: |
+          mv ./flutter/build/windows/x64/runner/Release ./YU-Destek
+          sed -i '/dpiAware/d' res/manifest.xml
+          pushd ./libs/portable
+          pip3 install -r requirements.txt
+          python3 ./generate.py -f ../../YU-Destek/ -o . -e ../../YU-Destek/rustdesk.exe
+          popd
+          version=$(grep -m1 '^version' Cargo.toml | cut -d '"' -f2)
+          mkdir -p output
+          mv ./target/release/rustdesk-portable-packer.exe ./output/YU-Destek-${version}-x64.exe
+          ls -l ./output/
 
       - name: Upload Windows Artifact
         uses: actions/upload-artifact@v4
