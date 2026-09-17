@@ -121,6 +121,7 @@ jobs:
           version=$(grep -m1 '^version' Cargo.toml | cut -d '"' -f2)
           mkdir -p output
           mv ./target/release/rustdesk-portable-packer.exe ./output/YU-Destek-${version}-x64.exe
+          powershell.exe -NoProfile -Command "Compress-Archive -Path ./YU-Destek -DestinationPath ./output/YU-Destek-${version}-x64.zip -Force"
           ls -l ./output/
 
       - name: Upload Windows Artifact
